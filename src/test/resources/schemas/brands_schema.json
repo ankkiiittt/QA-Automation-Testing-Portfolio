@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BrandsListResponse",
+  "type": "object",
+  "required": ["responseCode", "brands"],
+  "properties": {
+    "responseCode": {
+      "type": "integer"
+    },
+    "brands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "brand"],
+        "properties": {
+          "id": { "type": "integer" },
+          "brand": { "type": "string" }
+        }
+      }
+    }
+  }
+}
