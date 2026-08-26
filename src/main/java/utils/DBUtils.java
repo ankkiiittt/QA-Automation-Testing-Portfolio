@@ -32,8 +32,8 @@ public class DBUtils {
             String pass = ConfigReader.get("db.mysql.password", "root");
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                DriverManager.setLoginTimeout(3);
-                connection = DriverManager.getConnection(mysqlUrl, user, pass);
+                java.sql.DriverManager.setLoginTimeout(3);
+                connection = java.sql.DriverManager.getConnection(mysqlUrl, user, pass);
                 activeDbType = "MySQL";
                 log.info("Connected to MySQL database at {}", mysqlUrl);
                 return;
@@ -49,7 +49,7 @@ public class DBUtils {
             String h2Url = ConfigReader.get("db.h2.url", "jdbc:h2:mem:qa_automation;DB_CLOSE_DELAY=-1;MODE=MySQL");
             String user = ConfigReader.get("db.h2.username", "sa");
             String pass = ConfigReader.get("db.h2.password", "");
-            connection = DriverManager.getConnection(h2Url, user, pass);
+            connection = java.sql.DriverManager.getConnection(h2Url, user, pass);
             activeDbType = "H2 (Embedded In-Memory)";
             log.info("Connected to embedded H2 database ({}) for zero-config test logging", h2Url);
         } catch (Exception e) {
