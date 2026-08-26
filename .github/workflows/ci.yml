@@ -1,0 +1,59 @@
+name: QA Automation CI/CD Pipeline
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Execute Regression & API Test Suites
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: qa_automation
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Set up Google Chrome (Headless)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Compile and Verify Dependencies
+        run: mvn clean test-compile
+
+      - name: Run Full Test Automation Suite
+        run: mvn test -Dheadless=true -Dbrowser=chrome
+        env:
+          DB_MODE: auto
+
+      - name: Upload Extent & Cucumber Test Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-automation-reports
+          path: |
+            target/extent-reports/
+            target/cucumber-reports/
+            target/surefire-reports/
+            target/screenshots/
+          retention-days: 14

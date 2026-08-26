@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="QA Automation Master Regression Suite" parallel="tests" thread-count="2" verbose="2">
+
+    <listeners>
+        <listener class-name="listeners.TestListener"/>
+    </listeners>
+
+    <!-- ==================== 1. REST API TEST SUITE ==================== -->
+    <test name="REST Assured API Test Suite">
+        <classes>
+            <class name="api.ProductsApiTest"/>
+            <class name="api.BrandsApiTest"/>
+            <class name="api.SearchProductApiTest"/>
+        </classes>
+    </test>
+
+    <!-- ==================== 2. DATABASE REPORTING SUITE ==================== -->
+    <test name="Database Verification &amp; Reporting Suite">
+        <classes>
+            <class name="tests.DatabaseReportingTest"/>
+        </classes>
+    </test>
+
+    <!-- ==================== 3. SELENIUM UI REGRESSION SUITE ==================== -->
+    <test name="Selenium Web UI Regression Suite">
+        <classes>
+            <class name="tests.LoginTest"/>
+            <class name="tests.ProductSearchTest"/>
+            <class name="tests.CartAndCheckoutTest"/>
+        </classes>
+    </test>
+
+    <!-- ==================== 4. CUCUMBER BDD TEST SUITE ==================== -->
+    <test name="Cucumber BDD Test Suite">
+        <classes>
+            <class name="runners.CucumberTestRunner"/>
+        </classes>
+    </test>
+
+</suite>
